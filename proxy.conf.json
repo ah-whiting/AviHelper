@@ -1,0 +1,10 @@
+{
+    "/posts": {
+      "target": "https://nwac.us/",
+      "secure": true,
+      "pathRewrite": {
+      "^/posts": ""
+    },
+      "changeOrigin": true
+    }
+  }

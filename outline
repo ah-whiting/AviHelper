@@ -1,0 +1,41 @@
+How do i want to model my data?
+
+--> JSON
+
+(If CSV PORTAL,
+"Location")
+    _Stations
+        - geo(marker)?
+        - name
+        - data
+
+            {timestamp, fields}
+            -temp
+            -wind direction
+            -wind speed
+            -precip?
+            -24 snow
+                -visualize how?
+                    -chart.js 
+                    tables?
+
+        csvjson parser
+
+What do we want in Angular? 
+    -everything?
+    -Wrong
+    -server--> ping NWAC
+
+What do we want in Express/MongoDB?
+    -Users(ie. favorite zones, settings)
+    -a default setting?
+        -favorite forecasts
+
+NWAC Forecast Helper
+
+Last chance to bail and make a game.
+
+        -weather conditions:
+            wind slabs =
+                -wind direction/speed within 72 hours of 4+ inches snowfall
+            

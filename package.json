@@ -1,0 +1,24 @@
+{
+  "name": "Project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^10.12.20",
+    "axios": "^0.18.0",
+    "chart.js": "^2.7.3",
+    "csvjson": "^5.1.0",
+    "d3": "^5.9.1",
+    "express": "^4.16.4",
+    "jsdom": "^13.2.0",
+    "moment": "^2.24.0",
+    "mongoose": "^5.4.8",
+    "ngx-papaparse": "^3.0.2"
+  }
+}

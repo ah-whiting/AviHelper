@@ -1,0 +1,7 @@
+<p>
+  graph-display works!
+</p>
+
+<div *ngFor = "let option of dataOptions; index as i">
+  <canvas [id] = "'chart'+i">{{ charts[i] }}</canvas>
+</div>
