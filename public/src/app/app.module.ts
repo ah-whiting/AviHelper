@@ -9,12 +9,14 @@ import { GraphDisplayComponent } from './graph-display/graph-display.component'
 
 import { NwacCsvService} from './nwac-csv.service';
 import { CompassComponent } from './compass/compass.component';
+import { TableDisplayComponent } from './table-display/table-display.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     GraphDisplayComponent,
-    CompassComponent
+    CompassComponent,
+    TableDisplayComponent
   ],
   imports: [
     BrowserModule,

@@ -21,7 +21,7 @@ export class NwacCsvService {
   //     // .pipe(map(result=> result))
   // }
 
-  getData(location){
+  getData(location:String){
     return this._http.get(`/api/nwac/${location}`)
       // .pipe(map(data => this._papa.parse(data))
   }

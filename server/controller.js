@@ -23,18 +23,22 @@ module.exports = {
         function delayCalls(option = dataOptions, idx = 0){
 
             if(idx == option.length){
-                console.log('data sent')
+                // console.log(returnData);
                 const nwac = new Nwac(returnData);
                 nwac.save()
-                    .then(data => console.log('successful save'))
-                    .catch(err => console.log('woops', err))
+                .then(data => console.log('successful save'))
+                .catch(err => console.log('woops', err))
+                console.log('data sent');
                 return res.json(returnData)
             };
 
             axios.get(`https://www.nwac.us/data-portal/csv/location/${req.params.location}/sensortype/${option[idx]}/start-date/${startDate}/end-date/${endDate}/`)
 
                 .then(data => {
-                    let parsedData = data.data.split(". ").join();
+                    let keyIdx = data.data.indexOf("\n");
+                    firstLine = data.data.substr(0, keyIdx);
+                    let replaceLine = firstLine.split(".").join("");
+                    let parsedData = replaceLine + data.data.substr(keyIdx + 1);
                     returnData[option[idx]] = csvjson.toObject(parsedData);
                     console.log(option[idx], " hit")
                     setTimeout(delayCalls, 5000, dataOptions, idx + 1);
@@ -46,7 +50,7 @@ module.exports = {
 
     nwacDB: (req, res) => {
 
-        Nwac.findById("5c54bb916a9aba1bc8112fda")
+        Nwac.findById("5c886bdc04ae2d23f83dc733")
             .then(data => res.json(data))
             .catch(err => res.json(err))
     },
