@@ -1,2 +1,14 @@
 
+<div class="container">
+    Yo I'm Here
+    <div class="row" *ngFor="let issue of issues; index as i">
+        <div class="col">
+            <app-compass [issue]="issue" [idx]="i"></app-compass>
+        </div>
+    </div>
+</div>
+
+
+
+
 <router-outlet></router-outlet>

@@ -39,8 +39,20 @@ export class TableDisplayComponent implements OnInit {
     let row = [];
     let matrix = [];
     for(let i in data) {
+      let test = 0
       for(let j in data[i]) {
-        row.push(data[i][j]);
+        if(test == 0) {
+          row.push(data[i][j])
+        }
+        else {
+          if(data[i][j]> 0) {
+            row.push(Math.floor(data[i][j]));
+          }
+          else {
+            row.push(Math.ceil(data[i][j]));
+          }
+        }
+        test++;
       }
       matrix.push(row);
       row = [];

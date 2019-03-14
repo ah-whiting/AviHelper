@@ -38,4 +38,13 @@ Last chance to bail and make a game.
         -weather conditions:
             wind slabs =
                 -wind direction/speed within 72 hours of 4+ inches snowfall
+
+
+WindSlab Rules:
+
+start with heavy processing;
+
+call isTransportWind(4 + hours wind 20-40, WD difference <60)
+
+call IsSnowForTransport
             

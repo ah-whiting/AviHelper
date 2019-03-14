@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import * as d3 from 'd3';
 
 @Component({
@@ -7,10 +7,13 @@ import * as d3 from 'd3';
   styleUrls: ['./compass.component.css']
 })
 export class CompassComponent implements OnInit {
-
   aspects:string[];
   elevations:string[];
   compass:object;
+  divWrapper:string;
+
+  @Input() idx:number
+  @Input() issue:object
 
   constructor() { }
 
@@ -18,15 +21,18 @@ export class CompassComponent implements OnInit {
     this.compass = {};
     this.aspects = ["N","NE","E","SE","S","SW","W","NW"];
     this.elevations = ["above", "near", "below"];
+    this.divWrapper = `compass${this.idx}`
   }
   ngAfterViewInit() {
-    this.drawCompass([{aspect:"NE", elevation: "near"}, {aspect:"NE", elevation: "below"}]);
+    console.log(this.issue["compass"]);
+    // this.drawCompass([{aspect:"NE", elevation: "near"}, {aspect:"NE", elevation: "below"}]);
+    this.drawCompass([this.issue["compass"]]);
   }
 
   drawCompass(issues:object[] = []) {
     
     //create SVG element
-    d3.select("#compass")
+    let compass = d3.select(`#compass${this.idx}`)
       .append("svg")
         .attr("width", "600px")
         .attr("height", "500px")
@@ -49,19 +55,19 @@ export class CompassComponent implements OnInit {
                         .startAngle((i)* Math.PI / 4)
                         .endAngle((i + 1) * Math.PI / 4);
                 this.compass[this.aspects[i]][this.elevations[j]] = 
-                        d3.select("g")
+                        compass
                           .append("path")
                             .attr("d", tempGen());
                         
                 //draw lines and labels
                 let cen = tempGen.centroid();
                 if(i == 4) {
-                    d3.select("g")
+                    compass
                       .append("path")
                         .attr("d", `M ${cen[0]} ${cen[1]}, v 175`)
                         .attr("stroke", "black")
                         .attr("stroke-width", "1px");
-                    d3.select("g")
+                    compass
                       .append("text")
                         .attr("x", `${cen[0]}`)
                         .attr("y", `${cen[1] + 180}`)
@@ -69,7 +75,7 @@ export class CompassComponent implements OnInit {
                         .text(`${this.elevations[j]} treeline`);
                 }
                 if(j == 2) {
-                    d3.select("g")
+                    compass
                       .append("text")
                         .attr("transform", "translate(-8,8)")
                         .attr("x", `${cen[0]*1.5}`)
