@@ -12,8 +12,8 @@ export class CompassComponent implements OnInit {
   compass:object;
   divWrapper:string;
 
-  @Input() idx:number
-  @Input() issue:object
+  @Input() type:string
+  @Input() issues:object[]
 
   constructor() { }
 
@@ -21,27 +21,30 @@ export class CompassComponent implements OnInit {
     this.compass = {};
     this.aspects = ["N","NE","E","SE","S","SW","W","NW"];
     this.elevations = ["above", "near", "below"];
-    this.divWrapper = `compass${this.idx}`
+    this.divWrapper = `compass-${this.type}`
   }
   ngAfterViewInit() {
-    console.log(this.issue["compass"]);
+    console.log("init", this.issues);
+    console.log("type", this.type);
     // this.drawCompass([{aspect:"NE", elevation: "near"}, {aspect:"NE", elevation: "below"}]);
-    this.drawCompass([this.issue["compass"]]);
+    this.drawCompass(this.issues);
   }
 
   drawCompass(issues:object[] = []) {
-    
+    console.log(issues);
+
     //create SVG element
-    let compass = d3.select(`#compass${this.idx}`)
+    let compass = d3.select(`#compass-${this.type}`)
       .append("svg")
-        .attr("width", "600px")
-        .attr("height", "500px")
+        .attr("width", "500px")
+        .attr("height", "400px")
+        .attr("viewBox", "0 0 600 500")
       .append("g")
         .attr("fill", "none")
         .attr("transform", "translate(300, 200)")
         .attr("stroke", "black")
         .attr("stroke-width", "3px");
-
+    
         //draw compass arcs
         let tempGen;
         for(let j = 0; j < this.elevations.length; j++) {
@@ -87,7 +90,11 @@ export class CompassComponent implements OnInit {
             }
         }
         for (let i of issues) {
-          this.compass[i["aspect"]][i["elevation"]].attr("fill", "red");
+          let aspect = i["compass"]["aspect"];
+          let elevation = i["compass"]["elevation"];
+          this.compass[aspect][elevation]
+            .attr("fill", "red")
+            // .attr
         }
   }
 

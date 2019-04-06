@@ -1,14 +1,27 @@
-
-<div class="container">
-    Yo I'm Here
-    <div class="row" *ngFor="let issue of issues; index as i">
-        <div class="col">
-            <app-compass [issue]="issue" [idx]="i"></app-compass>
-        </div>
+<div class="container p-5">
+  <div class="row p-3">
+    <div class="col-12">
+      <h1 class="text-center"><strong>Avi Helper</strong></h1>
     </div>
+  </div>
+  <div class="row p-3">
+    <div class="slider-container col-8 p-3">
+      <label>StartDate: {{selectDay}} </label>
+      <input
+        type="range"
+        [max]="days"
+        class="custom-range"
+        [(ngModel)]="selectDay"
+        (ngModelChange)="generateProblems()"
+      />
+    </div>
+  </div>
+  <app-compass
+    class="p-3"
+    *ngFor="let type of types"
+    [issues]="issues[type]"
+    [type]="type"
+  ></app-compass>
 </div>
 
-
-
-
-<router-outlet></router-outlet>
+<!-- <router-outlet></router-outlet> -->

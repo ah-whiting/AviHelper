@@ -13,27 +13,25 @@ module.exports = {
 
     nwac: (req, res) => {
         console.log('nwac hit');
-
-        let startDate = moment().subtract(10, 'days').format("YYYY-MM-DD");
-        let endDate = moment().format("YYYY-MM-DD");
+        let rawEndDate = moment();
+        let endDate = rawEndDate.format("YYYY-MM-DD");
+        let startDate = rawEndDate.subtract(req.params.days, 'days').format("YYYY-MM-DD");
+        console.log("start date:", startDate, "endDate", endDate)
         let returnData = {};
-
         delayCalls();
 
         function delayCalls(option = dataOptions, idx = 0){
-
             if(idx == option.length){
                 // console.log(returnData);
                 const nwac = new Nwac(returnData);
                 nwac.save()
-                .then(data => console.log('successful save'))
-                .catch(err => console.log('woops', err))
+                    .then(data => console.log('successful save'))
+                    .catch(err => console.log('woops', err));
                 console.log('data sent');
                 return res.json(returnData)
             };
 
             axios.get(`https://www.nwac.us/data-portal/csv/location/${req.params.location}/sensortype/${option[idx]}/start-date/${startDate}/end-date/${endDate}/`)
-
                 .then(data => {
                     let keyIdx = data.data.indexOf("\n");
                     firstLine = data.data.substr(0, keyIdx);
@@ -43,14 +41,13 @@ module.exports = {
                     console.log(option[idx], " hit")
                     setTimeout(delayCalls, 5000, dataOptions, idx + 1);
                 })
-                .catch(err => console.log('get error', err))
+                .catch(err => console.log('get error', err));
         }
-
     },
 
     nwacDB: (req, res) => {
 
-        Nwac.findById("5c898f7f1e59b91e006aab9a")
+        Nwac.findById("5ca7c068d0a9e21c2886f2af")
             .then(data => res.json(data))
             .catch(err => res.json(err))
     },
