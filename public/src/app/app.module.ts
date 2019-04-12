@@ -8,6 +8,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { GraphDisplayComponent } from './graph-display/graph-display.component'
 
+import { DataSelectionService } from './data-selection.service';
 import { NwacCsvService} from './nwac-csv.service';
 import { CompassComponent } from './compass/compass.component';
 import { TableDisplayComponent } from './table-display/table-display.component';
@@ -28,7 +29,10 @@ import { HomeComponent } from './home/home.component';
     FormsModule
     // PapaParseModule
   ],
-  providers: [NwacCsvService],
+  providers: [
+    NwacCsvService,
+    DataSelectionService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -7,7 +7,7 @@ import { TableDisplayComponent } from './table-display/table-display.component';
 
 
 const routes: Routes = [
-  { path: '', component:GraphDisplayComponent},
+  { path: 'graph', component:GraphDisplayComponent},
   { path: 'compass', component:CompassComponent},
   { path: 'table', component:TableDisplayComponent}
 ];

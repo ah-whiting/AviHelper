@@ -1,0 +1,11 @@
+:host-context .nowrap { white-space: nowrap; }
+:host-context #tableWrapper #custom { background-color: white}
+:host-context #custom { height: 300px}
+/* :host table {background-color:white} */
+:host ::ng-deep table {
+    background-color:white;
+    font-size: .89em;
+}
+:host ::ng-deep th { height: 100px}
+
+/* p { font-weight: } */

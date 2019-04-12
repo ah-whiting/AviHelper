@@ -1,16 +1,20 @@
-<div class="container p-5">
-  <div class="row p-3">
-    <div class="col-12">
-      <h1 class="text-center"><strong>Avi Helper</strong></h1>
-    </div>
+<div class="row p-3 bg-warning header">
+  <div class="col-12 mx-2">
+    <h1 class="mx-5"><strong>Avi Helper</strong></h1>
   </div>
+</div>
+<div class="container">
   <div class="row p-3">
-    <div class="slider-container col-8 p-3">
-      <label>StartDate: {{selectDay}} </label>
+    <div class="slider-container col-10 p-3">
+      <h5 class="p-2 my-4 dateBox d-inline-block">Forecast Date: {{selectedDate}}</h5> 
       <input
         type="range"
         [max]="days"
-        class="custom-range"
+        class="slider"
+        height="30px"
+        list="tickmarks"
+        step="1"
+        id ="daySlider"
         [(ngModel)]="selectDay"
         (ngModelChange)="generateProblems()"
       />
@@ -21,7 +25,12 @@
     *ngFor="let type of types"
     [issues]="issues[type]"
     [type]="type"
+    (selectIssue) = "receiveIssue($event)"
   ></app-compass>
+  <app-table-display 
+    *ngIf="selectedIssue" 
+    [selectDay] = "selectDay">
+  </app-table-display>
 </div>
 
 <!-- <router-outlet></router-outlet> -->

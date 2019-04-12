@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input} from '@angular/core';
 import { NwacCsvService} from '../nwac-csv.service';
 import { Chart } from 'chart.js';
 import { forEach } from '@angular/router/src/utils/collection';
@@ -20,6 +20,9 @@ export class GraphDisplayComponent implements OnInit {
   chartData:object = {}
   nwac:any = []
   charts = {}
+
+  @Input() start: number
+  @Input() issue: object[]
 
   constructor(
     private _nwac:NwacCsvService

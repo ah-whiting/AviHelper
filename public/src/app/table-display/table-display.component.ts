@@ -1,5 +1,6 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Input } from "@angular/core";
 import { NwacCsvService } from "../nwac-csv.service";
+import { DataSelectionService } from "../data-selection.service";
 import * as d3 from "d3";
 
 @Component({
@@ -16,24 +17,44 @@ export class TableDisplayComponent implements OnInit {
     "wind_direction",
     "wind_speed_average"
   ];
+  windOptions = [
+    "wind_direction",
+    "wind_speed_average"
+  ]
   chartData: object = {};
   nwac: any = [];
   tables = {};
+  activeData;
+  selectedIssue;
 
-  constructor(private _nwac: NwacCsvService) {}
+  @Input() selectDay: number
+  // @Input() data: object
+  // @Input() issue: object
 
-  ngOnInit(){}
+  constructor(
+    private _nwac: NwacCsvService,
+    private _data: DataSelectionService
+    ) {}
 
+  ngOnInit() {
+    // console.log("data", this._data.activeData)
+  }
+  
   ngAfterViewInit(): void {
-    this.getData();
+    // this.getData();
+    // console.log(this.data);
+    this.selectedIssue = this._data.selectedIssue;
+    this.activeData = this._data.activeData;
+    console.log("issue", this.selectedIssue);
+    this.drawTable(this.activeData, this.windOptions, this.selectedIssue);
   }
 
-  getData() {
-    this._nwac.getData("snoqualmie-pass").subscribe(data => {
-      console.log(data);
-      this.drawTable(data, this.dataOptions);
-    })
-  }
+  // getData() {
+  //   this._nwac.getData("snoqualmie-pass").subscribe(data => {
+  //     console.log(data);
+  //     this.drawTable(data, this.dataOptions);
+  //   })
+  // }
 
   arrObjToMatrix(data) {
     let row = [];
@@ -60,10 +81,15 @@ export class TableDisplayComponent implements OnInit {
     return matrix;
   }
 
-  drawTable(data: Object, keys: string[]) {
+  drawIssue(issue) {
+  }
 
+  drawTable(data: object, keys: string[], selectedIssue) {
+    if(!data) {
+      console.log("not ready");
+      return;
+    }
     keys.forEach((option, i) => {
-
       let headers: string[] = [];
       for (let key in data[option][0]) {
         headers.push(key);
@@ -73,11 +99,14 @@ export class TableDisplayComponent implements OnInit {
       this.tables[option] = 
         d3.select("#tableWrapper")
           .append("div")
-            .attr("class", "col")
+            .attr("class", "col-6")
             .selectAll("div")
             .data([option])
             .join("table")
-              .attr("class", "table");
+              .attr("class", "table")
+              .attr("id", "custom")
+              .attr("height", "300px")
+              // .style("background-color", "white")
       this.tables[option]
         .append("thead")
           .append("tr")
@@ -85,17 +114,38 @@ export class TableDisplayComponent implements OnInit {
             .data(headers)
             .join("th")
               .text(d => d);
-      
+              
       //bind and write table data
       this.tables[option]
-        .append("tbody")
-          .selectAll("tr")
-          .data(this.arrObjToMatrix(data[option]))
-          .join("tr")
-            .selectAll("td")
-            .data(d => d)
-            .join("td")
-              .text(d => d);
+      .append("tbody")
+      .selectAll("tr")
+      .data(this.arrObjToMatrix(data[option]))
+      .join("tr")
+      .style("white-space", "nowrap")
+      .selectAll("td")
+        .data(d => d)
+        .join("td")
+        .text(d => d);
+      
+      // let selectedIssue = this._data.selectedIssue;
+      let start;
+      this.tables[option]
+        .selectAll("tr")
+        .filter(
+          function(d, i) { 
+            if(d[0] == selectedIssue["issue"]["startDate"]) {
+              console.log("hit table shittttt");
+              console.log("i count", i)
+              start = i;
+            }
+            if(start != null && i <= start + selectedIssue["issue"]["length"]) {
+              return d
+            }
+          })
+          // .attr("fill", "red")
+          .style("background-color", "red")
+          .style("font-weight", "bold")
+          
     })
 
     

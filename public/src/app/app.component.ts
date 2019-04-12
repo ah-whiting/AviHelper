@@ -1,6 +1,7 @@
-import { Component, SimpleChanges } from "@angular/core";
+import { Component, SimpleChanges, ChangeDetectorRef} from "@angular/core";
 import { NwacCsvService } from "./nwac-csv.service";
-import * as d3 from "d3";
+import { DataSelectionService } from "./data-selection.service";
+// import * as d3 from "d3";
 import * as moment from "moment";
 
 @Component({
@@ -10,11 +11,13 @@ import * as moment from "moment";
 })
 export class AppComponent {
   issues = [];
-  types = ["test"];
+  types = [];
   days:number = 45;
   selectDay:number = this.days
+  selectedDate:string
   data = {};
-  activeData = {};
+  activeData;
+  selectedIssue;
 
   dataOptions = [
     "temperature",
@@ -24,23 +27,43 @@ export class AppComponent {
     "wind_speed_average"
   ];
 
-  constructor(private _nwac: NwacCsvService) {}
+  constructor(
+    private _nwac: NwacCsvService, 
+    private _cdr: ChangeDetectorRef,
+    private _data: DataSelectionService
+    ) {}
 
   ngOnInit() {
     this.getData();
   }
 
-  generateProblems() {
-    this.issues = []
+  receiveIssue($event) {
+    this.selectedIssue = $event
+    this._cdr.detectChanges();
+  }
+
+  problemReset() {
+    for(let i in this.types) {
+      this.issues[i] = []
+      this._cdr.detectChanges();
+    }
+    this.issues = [];
     this.types = [];
+  }
+
+  generateProblems() {
+    this.selectedIssue = null;
+    this.issues = [];
+    this.types = [];
+    // this.problemReset();
     this.getActiveData();
     this.windSlab(this.activeData);
-    console.log(this.activeData);
+    // this._cdr.detectChanges();
   }
 
   getActiveData() {
     this.activeData = {};
-    console.log("current data", this.data)
+    this._cdr.detectChanges();
     let start = (45-this.selectDay)*24;
     for(let option of this.dataOptions) {
       if(!this.activeData[option]) {
@@ -49,22 +72,26 @@ export class AppComponent {
       for(let i = start; i < start + 241; i++)
       this.activeData[option].push(this.data[option][i]);
     }
+    this.selectedDate = moment(this.activeData[this.dataOptions[0]][0]["Date/Time (PST)"]).format("MMMM Do YYYY");
+    this._data.activeData = this.activeData;
   }
-
+  
   getData() {
     this._nwac.getData("snoqualmie-pass", this.days).subscribe(data => {
       console.log(data);
       this.data = data;
-      this.getActiveData();
-      console.log("ACTIVE DATA", this.activeData);
-      console.log(this.windSlab(this.activeData));
-      // console.log(this.windSlab(data));
-      // console.log("issues", this.issues);
-      // console.log()
+      this._data.updateData(data);
+      this.generateProblems();
+      // this.getActiveData();
+
+      // console.log("ACTIVE DATA", this.activeData);
+      // console.log(this.windSlab(this.activeData));
     });
   }
-
+  
   windSlab(data) {
+    this.issues["wind"] = [];
+    this._cdr.detectChanges();
     let directionDict = {
       N: 0,
       NE: 45,
@@ -79,16 +106,12 @@ export class AppComponent {
     let winds = this.findTransportWinds(data);
     let windSlabs = [];
     for (let i = 0; i < winds.length; i++) {
-      // console.log("wind", winds[i]);
       if (this.isSnowForTransfer(data, winds[i]["start"])) {
         windSlabs.push(winds[i]);
-        // console.log("windslab problem bro", winds[i]);
-        // console.log("slabsnow", windSlabs)
       }
     }
     if (windSlabs.length > 0) {
       this.types.push("wind");
-      this.issues["wind"] = [];
     }
     for (let wind of windSlabs) {
       let oppWind = wind["dir"] + 180;
@@ -133,7 +156,6 @@ export class AppComponent {
     let wd = data["wind_direction"];
     ws = this.arrObjToMatrix(ws);
     wd = this.arrObjToMatrix(wd);
-    // console.log(wd);
     let isTransportSpeed = datapoint => {
       if (10 < datapoint && datapoint < 30) {
         return true;
@@ -161,7 +183,6 @@ export class AppComponent {
         ) {
           hours++;
           j++;
-          // console.log("i+j", i+j, "wd.length", wd.length)
           curDir = wd[i + j][3];
           curWs = ws[i + j][2];
         }
@@ -169,6 +190,7 @@ export class AppComponent {
           // console.log("4 hour wind found")
           winds.push({
             start: i,
+            startDate: ws[i][0],
             length: hours,
             dir: tDir
           });
@@ -176,7 +198,6 @@ export class AppComponent {
         }
       }
     }
-    // console.log(winds);
     return winds;
   }
 

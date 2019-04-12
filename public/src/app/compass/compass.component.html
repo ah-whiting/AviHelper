@@ -1,9 +1,27 @@
 <div class="row p-4">
-  <div class="col p-2">
-    <h1>Type: {{ type }}</h1>
+  <div class="col-7 p-2">
+    <div *ngIf="type == 'wind'" class="info p-4">
+      <h1><strong>Type: Wind Slab</strong></h1>
+      <p class="border-bottom aviDesc">
+        <strong>Wind Slab</strong> avalanches are the release of a cohesive
+        layer of snow (a slab) formed by the wind. Wind typically transports
+        snow from the upwind sides of terrain features and deposits snow on the
+        downwind side. Wind slabs are often smooth and rounded and sometimes
+        sound hollow, and can range from soft to hard. Wind slabs that form over
+        a persistent weak layer (surface hoar, depth hoar, or near-surface
+        facets) may be termed Persistent Slabs or may develop into Persistent
+        Slabs.
+      </p>
+      <p class= "text-danger">
+        <strong>Rule At Play:</strong> Average wind speed of 12-30 mph for at least 4 hours from a direction window of 120 degrees and at least 4" of snowfall within 72 hours of the start of the wind event.
+      </p>
+    </div>
   </div>
-  <div class="col p-2">
+  <div class="col-5 p-2">
     <div [id]="divWrapper"></div>
+    <div [id]="toolTip" class="toolTip">
+      <p class="tipText"></p>
+      <h5>click for more information</h5>
+    </div>
   </div>
 </div>
-

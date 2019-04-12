@@ -1,0 +1,21 @@
+
+
+.toolTip {
+    border: 5px solid black;
+    font-size: 1.3em;
+    display: none;
+    position: absolute;
+    width: 75%;
+    background-color:white;
+}
+
+.info {
+    background-color:white;
+    border-radius:5px;
+    box-shadow:2px 2px;
+    /* color: white; */
+}
+
+.aviDesc {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
+}
