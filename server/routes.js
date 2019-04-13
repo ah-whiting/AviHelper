@@ -4,6 +4,6 @@ module.exports = (app) => {
 
     app
         // .get('/init', controller.init)
-        .get('/api/nwac/:location/:days', controller.nwacDB)
+        .get('/api/nwac/:location/:days', controller.nwac)
         
 }
