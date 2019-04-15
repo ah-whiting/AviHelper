@@ -1,38 +1,36 @@
 .slider {
--webkit-appearance: none;  /* Override default CSS styles */
+-webkit-appearance: none;  
 appearance: none;
-width: 75%; /* Full-width */
-height: 25px; /* Specified height */
-background: white; /* Grey background */
-outline: none; /* Remove outline */
-opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
--webkit-transition: .2s; /* 0.2 seconds transition on hover */
+width: 75%; 
+height: 25px; 
+background: white; 
+outline: none; 
+opacity: 0.7; 
+-webkit-transition: .2s; 
 transition: opacity .2s;
 box-shadow: 2px 3px black;
 border-radius: 3px;
 }
 
-/* Mouse-over effects */
 .slider:hover {
-opacity: 1; /* Fully shown on mouse-over */
+opacity: 1; 
 }
 
-/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */ 
 .slider::-webkit-slider-thumb {
--webkit-appearance: none; /* Override default look */
+-webkit-appearance: none; 
 appearance: none;
-width: 45px; /* Set a specific slider handle width */
-height: 35px; /* Slider handle height */
+width: 45px; 
+height: 35px; 
 border:3px solid grey;
-background: orangered; /* Green background */
-cursor: pointer; /* Cursor on hover */
+background: orangered; 
+cursor: pointer; 
 }
 
 .slider::-moz-range-thumb {
-width: 45px; /* Set a specific slider handle width */
-height: 25px; /* Slider handle height */
-background: orangered; /* Green background */
-cursor: pointer; /* Cursor on hover */
+width: 45px; 
+height: 25px; 
+background: orangered; 
+cursor: pointer; 
 }
 
 .header {
@@ -43,7 +41,10 @@ cursor: pointer; /* Cursor on hover */
 
 .container {
     font-family: 'Courier New', Courier, monospace;
-    max-width:88%
+    max-width:88%;
+    /* -moz-transform: scale(0.95);
+    -webkit-transform: scale(0.95);
+    transform: scale(0.95); */
 }
 
 .dateBox {
@@ -51,4 +52,9 @@ cursor: pointer; /* Cursor on hover */
     /* box-shadow: 2px 2px;  */
     border: 5px solid black;
     background-color: white;
+}
+
+html {
+    /* zoom: 0.8; Old IE only */
+    
 }

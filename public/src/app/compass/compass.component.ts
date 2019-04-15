@@ -35,13 +35,11 @@ export class CompassComponent implements OnInit {
     this.toolTip = `tip-${this.type}`
   }
   ngAfterViewInit() {
-    console.log("init", this.issues);
     this.drawCompass(this.issues);
   }
 
   drawCompass(issues:object[] = []) {
-    console.log(issues);
-
+    
     //create SVG element
     let compass = d3.select(`#compass-${this.type}`)
       .append("svg")
@@ -113,7 +111,6 @@ export class CompassComponent implements OnInit {
 
     let toolTipID = this.toolTip;
     function handleMouseover(d, i) {
-      console.log(d)
       this.toolTipText = d;
       this.toolTipBool = true;
       // let iconPos = this.getBoundingClientRect();
@@ -132,14 +129,9 @@ export class CompassComponent implements OnInit {
     }
     let _this = this;
     function handleClick(d, i) {
-      console.log("fucclkl")
       _this.selectedIssue =  d;
       _this._data.selectIssue(d);
       _this.selectIssue.emit(d);
-      
-      // _router.navigate(["table"]);
-      // this.issues["wind"] = []; need export/output
-      // this._cdr.detectChanges
     }
     
   }

@@ -78,14 +78,9 @@ export class AppComponent {
   
   getData() {
     this._nwac.getData("snoqualmie-pass", this.days).subscribe(data => {
-      console.log(data);
       this.data = data;
       this._data.updateData(data);
       this.generateProblems();
-      // this.getActiveData();
-
-      // console.log("ACTIVE DATA", this.activeData);
-      // console.log(this.windSlab(this.activeData));
     });
   }
   
@@ -147,7 +142,6 @@ export class AppComponent {
         }
       }
     }
-    console.log("slabs", windSlabs);
   }
 
   findTransportWinds(data) {
@@ -165,11 +159,9 @@ export class AppComponent {
       let tLength;
       let tDir;
       if (isTransportSpeed(ws[i][2])) {
-        // console.log("single Transport Wind Found")
         tDir = wd[i][3];
         let curDir = tDir;
         let curWs = ws[i][2];
-        // console.log(wd[i][0], curWs, curDir);
         let hours = 0;
         let j = 0;
         // console.log("dirTest", (Math.abs(tDir-curDir) < 60));
@@ -177,7 +169,7 @@ export class AppComponent {
         // console.log("range test", ((i + j )< wd.length));
         // console.log("i:", i, "j:", j, "i + j", i + j, "wd.length", wd.length)
         while (
-          Math.abs(tDir - curDir) < 60 &&
+          Math.abs(tDir - curDir) < 45 &&
           isTransportSpeed(curWs) &&
           i + j + 1 < wd.length
         ) {
@@ -204,24 +196,19 @@ export class AppComponent {
   isSnowForTransfer(data, idx): boolean {
     let s24 = data["snowfall_24_hour"];
     s24 = this.arrObjToMatrix(s24);
-    // console.log(s24)
     let s72Arr = [];
     let s72Sum = 0;
     for (let i = idx; i < idx + 72; i++) {
-      // console.log(s24[i])
       if (i >= s24.length) {
         break;
       }
       if (s24[i][3] == 0 && Math.max.apply(Math, s72Arr) > 0) {
         s72Sum += Math.max.apply(Math, s72Arr);
         s72Arr = [];
-        // console.log(s72Sum)
       }
       s72Arr.push(s24[i][3]);
-      // console.log(s72Arr);
     }
     if (s72Sum > 3) {
-      console.log(idx);
       return true;
     }
     return false;

@@ -37,24 +37,13 @@ export class TableDisplayComponent implements OnInit {
     ) {}
 
   ngOnInit() {
-    // console.log("data", this._data.activeData)
   }
   
   ngAfterViewInit(): void {
-    // this.getData();
-    // console.log(this.data);
     this.selectedIssue = this._data.selectedIssue;
     this.activeData = this._data.activeData;
-    console.log("issue", this.selectedIssue);
     this.drawTable(this.activeData, this.windOptions, this.selectedIssue);
   }
-
-  // getData() {
-  //   this._nwac.getData("snoqualmie-pass").subscribe(data => {
-  //     console.log(data);
-  //     this.drawTable(data, this.dataOptions);
-  //   })
-  // }
 
   arrObjToMatrix(data) {
     let row = [];
@@ -81,12 +70,8 @@ export class TableDisplayComponent implements OnInit {
     return matrix;
   }
 
-  drawIssue(issue) {
-  }
-
   drawTable(data: object, keys: string[], selectedIssue) {
     if(!data) {
-      console.log("not ready");
       return;
     }
     keys.forEach((option, i) => {
@@ -127,15 +112,13 @@ export class TableDisplayComponent implements OnInit {
         .join("td")
         .text(d => d);
       
-      // let selectedIssue = this._data.selectedIssue;
+      //highlight problematic table rows
       let start;
       this.tables[option]
         .selectAll("tr")
         .filter(
           function(d, i) { 
             if(d[0] == selectedIssue["issue"]["startDate"]) {
-              console.log("hit table shittttt");
-              console.log("i count", i)
               start = i;
             }
             if(start != null && i <= start + selectedIssue["issue"]["length"]) {
@@ -147,10 +130,5 @@ export class TableDisplayComponent implements OnInit {
           .style("font-weight", "bold")
           
     })
-
-    
-        
-    
-
   }
 }
