@@ -31,7 +31,7 @@ export class GraphDisplayComponent implements OnInit {
   ngOnInit() {
     this.getData("snoqualmie-pass");
   }
-  getData(location:String){
+  getData(location:string){
     this._nwac.getData(location).subscribe(data => {
 
       //establish data categories

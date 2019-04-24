@@ -4,9 +4,17 @@
   </div>
 </div>
 <div class="container">
-  <div class="row p-3">
+  <div class="row p-3 justify-content-between">
     <div class="slider-container col-10 p-3">
-      <div><h5 class="p-2 my-4 dateBox d-inline-block">Forecast Date: {{selectedDate}}</h5></div>
+        <h5 class="p-2 dateBox">Forecast Date: {{selectedDate}}</h5>
+        <form class="px-2 dateBox form-inline mx-4 d-inline-block">
+          <div class="form-group">
+            <label for="">Forecast Location: </label>
+            <select class="form-control" name="location" id="">
+              <option value="snoqualmie-pass">Snoqualmie Pass</option>
+            </select>
+          </div>
+        </form>
       <input
         type="range"
         [max]="days"
